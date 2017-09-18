@@ -22,6 +22,10 @@ sudo chown munge /etc/munge/munge.key
 sudo chgrp munge /etc/munge/munge.key
 ```
 
+4) Copy the `slurm.conf` and other configuration files to `/etc/slurm-llnl/`:
+```bash
+sudo cp ./slurm-llnl/*.conf /etc/slurm-llnl/
+```
 
 
 ## On the *head* node:

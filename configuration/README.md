@@ -25,8 +25,9 @@ sudo chgrp munge /etc/munge/munge.key
 
 
 ## On the *head* node:
-1) Start the `slurmctld` daemon
+1) Start the `munge` and `slurmctld` daemons.
 ``` bash
+sudo /etc/init.d/munge start
 sudo /etc/init.d/slurmctld start
 ```
 
@@ -34,8 +35,9 @@ sudo /etc/init.d/slurmctld start
 
 
 ## On each *compute* node:
-1) Start the `slurmd` daemon
+1) Start the `munge` and `slurmd` daemon
 ``` bash
+sudo /etc/init.d/munge start
 sudo /etc/init.d/slurmd start
 ```
 

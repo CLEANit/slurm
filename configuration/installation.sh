@@ -7,5 +7,5 @@ sudo mkdir -p /var/spool/slurmd
 sudo chown slurm /var/spool/slurmd 
 
 
-bash update_configurations.sh
+bash update_config.sh
 

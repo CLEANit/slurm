@@ -9,4 +9,5 @@ sudo cp ./slurm-llnl/*.conf /etc/slurm-llnl/
 
 
 sudo /etc/init.d/munge start
+sudo systemctl restart slurmctld
 

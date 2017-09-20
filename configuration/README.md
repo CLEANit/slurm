@@ -40,13 +40,18 @@ sudo systemctl start slurmctld
 
 
 
-
 ## On each *compute* node:
 1) Start the `munge` and `slurmd` daemon
 ``` bash
 sudo systemctl start munge
 sudo systemctl start slurmd
 ```
+
+
+#To make configuration changes:
+1) Make changes on the head node in this directory.
+2) Run `bash distribute_configs.sh` to copy the configurations to all hosts in the `hosts` file
+3) Run `sudo bash update_config.sh` to update the head node configuration and restart the `slurmctld` service 
 
 
 

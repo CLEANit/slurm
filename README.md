@@ -2,7 +2,8 @@
 
 
 SLURM is configured on the transformers, that is:
-``` arcee
+```
+arcee
 shockwave
 ratchet
 starscream
@@ -11,7 +12,7 @@ It is configured in _Backfill/FIFO mode_, that is First In First Out, with backf
 
 This enables users to queue GPU (or CPU) jobs. 
 
-Since these nodes do not share a filesystem, jobs must be submitted a bit differently than the traditional cluster setup, with the specific node on which they are destined to run specified in the submit script. If the node is not specified, the job will run on _any_ node, and consequently file dependencies will either not be met, or files will be placed on a node not expected.
+Since these nodes do not share a filesystem, jobs must be submitted a bit differently than the traditional cluster setup, with the specific node on which they are destined to run specified in the submit script. If the node is not specified, the job will run on _any_ node, and consequently file dependencies will either not be met, or files will be placed (or worse, overwritten) on a node not expected.
 
 Here is the minimal submit script for running a GPU-enabled Python script on two GPUs on shockwave:
 

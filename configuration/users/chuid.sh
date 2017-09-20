@@ -24,7 +24,6 @@ then
       esac
    done
 fi
-exit
 
 oldUID=$(id -u $1)
 oldGID=$(id -g $1)

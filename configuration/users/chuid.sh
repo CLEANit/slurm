@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo ""
+echo "!!!!!!!!!!!!!!"
+echo "!! $1        "
+echo "!!!!!!!!!!!!!!"
+echo ""
+
+
 #Create the user if it doesn't exist
 id -u $1 || adduser $1
 

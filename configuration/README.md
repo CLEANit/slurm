@@ -2,6 +2,9 @@
 
 ## On all nodes:
 
+0) Add `deb http://ftp.de.debian.org/debian sid main` to /etc/apt/sources.list`.
+
+
 1) Install slurm and mail.  Mail just needs to exist, not necessarily _work_.
 
 ```bash 
@@ -31,19 +34,24 @@ sudo cp ./slurm-llnl/*.conf /etc/slurm-llnl/
 ## On the *head* node:
 1) Start the `munge` and `slurmctld` daemons.
 ``` bash
-sudo /etc/init.d/munge start
-sudo /etc/init.d/slurmctld start
+sudo systemctl start munge
+sudo systemctl start slurmctld
 ```
-
 
 
 
 ## On each *compute* node:
 1) Start the `munge` and `slurmd` daemon
 ``` bash
-sudo /etc/init.d/munge start
-sudo /etc/init.d/slurmd start
+sudo systemctl start munge
+sudo systemctl start slurmd
 ```
+
+
+#To make configuration changes:
+1) Make changes on the head node in this directory.
+2) Run `bash distribute_configs.sh` to copy the configurations to all hosts in the `hosts` file
+3) Run `sudo bash update_config.sh` to update the head node configuration and restart the `slurmctld` service 
 
 
 

@@ -5,7 +5,11 @@ while true; do
     sleep 1
 
 
-non_slurm_pids=$(comm -23 <(pgrep python) <(scontrol listpids 2>/dev/null | awk 'NR>1 {print $1}'))
+pids_to_check=$(nvidia-smi  | grep -A 10000 PID | grep -v '+-------' | awk 'NR > 2{print $3}')
+pids_to_check=$(pgrep python)$pids_to_check
+
+
+non_slurm_pids=$(comm -23 <(echo $pids_to_check) <(scontrol listpids 2>/dev/null | awk 'NR>1 {print $1}'))
 
 echo "Processes I'm keeping an eye on:"
 for pid in $non_slurm_pids; 

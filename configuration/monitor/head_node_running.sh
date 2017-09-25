@@ -11,26 +11,27 @@ else
     non_slurm_pids=""
 fi
 
-echo "Processes I'm keeping an eye on:"
-for pid in $non_slurm_pids; 
-do 
-    echo -e $pid "\t" $(ps -o etimes= $pid)
-done
+if [[ ! "x$non_slurm_pids" == "x" ]] ;
+then
+
+    echo "Processes I'm keeping an eye on:"
+    for pid in $non_slurm_pids; 
+    do 
+        echo -e $pid "\t" $(ps -o etimes= $pid)
+    done
 
 
+    for pid in $non_slurm_pids; 
+    do 
+        etime=$(ps -o etimes= $pid)
+        if [[ $etime -gt 60 ]]; then
+            echo "PID $pid has been running for over 1 minute. Sending SIGINT."
+            kill -s SIGINT $pid
+        fi
 
-
-for pid in $non_slurm_pids; 
-do 
-    etime=$(ps -o etimes= $pid)
-    if [[ $etime -gt 60 ]]; then
-        echo "PID $pid has been running for over 1 minute. Sending SIGINT."
-        kill -s SIGINT $pid
-    fi
-
-    if [[ $etime -gt 600 ]]; then
-        echo "PID $pid has been running for over 10 minutes and has ignored the previously sent SIGINTs. Sending SIGKILL."
-        kill -s SIGKILL $pid
-    fi
-done
-
+        if [[ $etime -gt 600 ]]; then
+            echo "PID $pid has been running for over 10 minutes and has ignored the previously sent SIGINTs. Sending SIGKILL."
+            kill -s SIGKILL $pid
+        fi
+    done
+fi

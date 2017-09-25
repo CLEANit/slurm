@@ -24,14 +24,16 @@ then
     for pid in $non_slurm_pids; 
     do 
         etime=$(ps -o etimes= $pid)
-        if [[ $etime -gt 60 ]]; then
+        if [[ $etime -gt 600 ]]; then
+            echo "PID $pid has been running for over 10 minutes and has ignored both SIGINTs and SIGTERMs. Sending SIGKILL."
+            kill -s SIGKILL $pid
+        elif [[ $etime -gt 300 ]]; then
+            echo "PID $pid has been running for over 5 minutes and has ignored the previous SIGINTs. Sending SIGTERM."
+            kill -s SIGTERM $pid
+        elif [[ $etime -gt 60 ]]; then
             echo "PID $pid has been running for over 1 minute. Sending SIGINT."
             kill -s SIGINT $pid
         fi
 
-        if [[ $etime -gt 600 ]]; then
-            echo "PID $pid has been running for over 10 minutes and has ignored the previously sent SIGINTs. Sending SIGKILL."
-            kill -s SIGKILL $pid
-        fi
     done
 fi

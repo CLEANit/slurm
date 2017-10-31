@@ -39,10 +39,20 @@ Additional options can be added, such as a walltime limit, and the location of t
 python train.py
 
 ```
-
-
  
 The submit script can be placed in a file, say `submit.s`, and then the job can be submitted using
 ```bash 
 sbatch submit.s
 ```
+
+
+You can also run interactively (without a submit script) by using the `srun` command:
+``` bash
+srun --nodelist='arcee' --gres=gpu:3 python script.py
+```
+
+This will run the the `script.py` python script with 3 GPUs available on arcee.
+
+
+
+

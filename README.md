@@ -11,7 +11,7 @@ bumblebee
 ```
 It is configured in _Backfill/FIFO mode_, that is First In First Out, with backfill. This means that jobs will largely be run in the order they are submitted, but the scheduler will attempt to make efficient use of multiple GPU jobs, backfilling where possible. There is no job accounting, and every user is treated equally in the queue.  Please use it responsibly.
 
-The maximum walltime for a job is 7 days, and the default job length if no time limit is specified is 1 day.
+The maximum walltime for a job is 7 days, and the default job length if no time limit is specified is 1 day. Shorter jobs can potentially see lower queue times because the scheduler can backfill.
 
 Since these nodes do not share a filesystem, jobs must be submitted a bit differently than a traditional cluster setup, with the specific node on which they are destined to run specified in the submit script. If the node is not specified, the job will run on _any_ node, and consequently file dependencies will either not be met, or files will be placed (or worse, overwritten) on a node not expected.
 

@@ -9,11 +9,9 @@ ratchet
 starscream
 bumblebee
 ```
-It is configured in _Backfill/FIFO mode_, that is First In First Out, with backfill. This means that jobs will largely be run in the order they are submitted, but the scheduler will attempt to make efficient use of multiple GPU jobs, backfilling where possible. There is no job accounting, and every user is treated equally in the queue.  Please use it responsibly.
+The maximum walltime for a job is 24 hours, and the default job length if no time limit is specified is 10 minutes. Shorter jobs can potentially see lower queue times because the scheduler can backfill.
 
-The maximum walltime for a job is 7 days, and the default job length if no time limit is specified is 1 day. Shorter jobs can potentially see lower queue times because the scheduler can backfill.
-
-Since these nodes do not share a filesystem, jobs must be submitted a bit differently than a traditional cluster setup, with the specific node on which they are destined to run specified in the submit script. If the node is not specified, the job will run on _any_ node, and consequently file dependencies will either not be met, or files will be placed (or worse, overwritten) on a node not expected.
+Since these nodes do not share a filesystem, jobs should likely be submitted a bit differently than a traditional cluster setup, with the specific node on which they are destined to run specified in the submit script. If the node is not specified, the job will run on _any_ node, and consequently file dependencies will either not be met, or files will be placed (or worse, overwritten) on a node not expected.  See the section "Node-agnostic queues" below for more information. 
 
 Here is the minimal submit script for running a GPU-enabled Python script on two GPUs on shockwave:
 
@@ -53,6 +51,32 @@ srun -p $HOSTNAME --gres=gpu:3 python script.py
 however the submit script method is recommended to avoid jobs being killed upon ssh connection loss.
 
 This will run the the `script.py` python script with 3 GPUs available on arcee.
+
+
+## Job accounting and priority
+Slurm is configured to keep track of job usage and schedule jobs based on a fair share priority.  That is, users who consume more resources will be prioritized below infrequent users.  Each running job has an associated "cost" which is billed based on the resources requested.  For example, a four-GPU job will be billed at 4x the rate of a single-GPU job, and GPUs will be billed based on their memory/performance, with higher-performing GPUs (e.g. bumblebee), costing more than the others.
+
+### Free queues
+There are some "free-queues" which cost nothing against your priority to run in.  These are the `lp*` queues (`lp=low priority`), and the `gpu_med` (gpu, medium priority) queue. Jobs will, however be instantaneously preemtpted by jobs submitted to higher priority queues, so these should only be used for long-running, frequently-checkpointing jobs.
+
+## Node-agnostic queues
+Jobs submitted to the `gpu`, `cpu`, and `gpu_med` partitions will be run on _any_ available node. If you would like your job to run on a specific node, make sure to specify `--nodelist=nodename` to sbatch.  *Be very careful in these queues as there is no shared filesystem.  e.g. if you submit your job with `-p gpu` from `arcee:/home/experiment`, the job could run on `ratchet` with working directory `ratchet:/home/experiment`.  In the ideal case, the files will not exist and your job will fail, but worst case you will unexpectedly overwrite some files on `ratchet`.
+
+
+
+## Longer walltime
+For maximum throughput and sharing of resources, the walltime is set at a 24-hour maximum. To make longer-running jobs easier, I have set up a submission wrapper `sbatchchain` which will submit a "chain" of jobs, each dependent on the completion of the previous job.  For example
+```bash
+sbatchchain submit.s 10
+```
+will submit 10 instances of `submit.s` to run in sequence.  Note that this doesn't preserve your environment, etc. so you should have checkpointing (saving/restoring) configured in whatever program you're running.   
+
+This script merely uses the `--dependency` options of Slurm and comes with no warranty.  Take a look at the script before using it to make sure it meets your needs:
+
+```bash
+cat $(which sbatchchain)
+```
+
 
 
 

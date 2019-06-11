@@ -3,11 +3,17 @@
 
 SLURM is configured on the transformers, that is:
 ```
-arcee
-shockwave
-ratchet
-starscream
-bumblebee
+Gen-1:
+  arcee
+  shockwave
+  ratchet
+  starscream
+Gen-2:
+  bumblebee
+Gen-3:
+  chromia
+  thundercracker
+  moonracer
 ```
 The maximum walltime for a job is 24 hours, and the default job length if no time limit is specified is 10 minutes. Shorter jobs can potentially see lower queue times because the scheduler can backfill.
 
@@ -54,10 +60,10 @@ This will run the the `script.py` python script with 3 GPUs available on arcee.
 
 
 ## Job accounting and priority
-Slurm is configured to keep track of job usage and schedule jobs based on a fair share priority.  That is, users who consume more resources will be prioritized below infrequent users.  Each running job has an associated "cost" which is billed based on the resources requested.  For example, a four-GPU job will be billed at 4x the rate of a single-GPU job, and GPUs will be billed based on their memory/performance, with higher-performing GPUs (e.g. bumblebee), costing more than the others.
+Slurm is configured to keep track of job usage and schedule jobs based on a fair share priority.  That is, users who consume more resources will be prioritized below infrequent users.  Each running job has an associated "cost" that is billed based on the resources requested.  For example, a four-GPU job will be billed at 4x the rate of a single-GPU job, and GPUs will be billed based on their memory/performance, with higher-performing GPUs (e.g. bumblebee, chromia), costing more than the others.
 
 ### Free queues
-There are some "free-queues" which cost nothing against your priority to run in.  These are the `lp*` queues (`lp=low priority`), and the `gpu_med` (gpu, medium priority) queue. Jobs will, however be instantaneously preemtpted by jobs submitted to higher priority queues, so these should only be used for long-running, frequently-checkpointing jobs.
+There are some "free-queues" which cost nothing against your priority to run in.  These are the `lp*` queues (`lp=low priority`), and the `gpu_med` (gpu, medium priority) queue. Jobs will, however be instantaneously preemtpted by jobs submitted to higher priority queues, so these should only be used for long-running, frequently-checkpointing jobs that are prepared to die at any given time.
 
 ## Node-agnostic queues
 Jobs submitted to the `gpu`, `cpu`, and `gpu_med` partitions will be run on _any_ available node. If you would like your job to run on a specific node, make sure to specify `--nodelist=nodename` to sbatch.  *Be very careful in these queues as there is no shared filesystem.  e.g. if you submit your job with `-p gpu` from `arcee:/home/experiment`, the job could run on `ratchet` with working directory `ratchet:/home/experiment`.  In the ideal case, the files will not exist and your job will fail, but worst case you will unexpectedly overwrite some files on `ratchet`.

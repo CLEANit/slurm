@@ -90,6 +90,28 @@ Generally, it is recommended that each user maintain their own environment using
 ```bash /software/anaconda/Anaconda3-2019.03-Linux-x86_64.sh```
 The version of Anaconda maintained here may not be the most recent. If you want to be sure you're using the most recent version, download it from here: https://www.anaconda.com/distribution/
 
+#### TensorFlow, PyTorch, etc.
+Python modules that depend on CUDA and CuDNN should be installed using the `conda` package manager and *not* pip.  You will probably wish to install the GPU-accelerated versions, e.g. 
+
+```bash
+conda install tensorflow-gpu
+```
+
+Using `conda` allows Anaconda to manage the CUDA and CuDNN libraries. If you get a missing `libcudart.so` error, chances are your TensorFlow or PyTorch was installed using `pip`.
+
+### Other software
+
+Some other software is provided through `modules`.  Use 
+```bash
+module avail
+```
+to see what is available and 
+```bash 
+module load XXX
+```
+to add the software to your $PATH.
+
+### Other, other software
 
 If specific software is required that requires sudo access to install, please ask @millskyle to install it by posting in #comp-transformers Slack channel. 
 

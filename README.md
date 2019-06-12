@@ -84,7 +84,7 @@ cat $(which sbatchchain)
 ```
 
 
-## Software
+# Software
 ### Python and python modules
 Generally, it is recommended that each user maintain their own environment using Anaconda.  The fastest way to install Anaconda is by running
 ```bash /software/anaconda/Anaconda3-2019.03-Linux-x86_64.sh```

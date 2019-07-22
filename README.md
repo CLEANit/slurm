@@ -16,7 +16,7 @@ Gen-3:
   moonracer
 ```
 
-Because of some weird DNS pecularities at NRC, the hostname to log into these machines is not consistent.  Some machines respond to `.local`, and others require the full `.sims.nrc.ca` suffix. It is recommended to add the contents of [this hosts file](hosts) to your local `/etc/hosts` file (if you have local sudo).
+Because of some weird DNS pecularities at NRC, the hostname to log into these machines is not consistent.  Some machines respond to `.local`, and others require the full `.sims.nrc.ca` suffix. To completely avoid having to think about this, it is recommended to add the contents of [this hosts file](hosts) to your local `/etc/hosts` file (if you have local sudo).
 
 The maximum walltime for a job is 24 hours, and the default job length if no time limit is specified is 10 minutes. Shorter jobs can potentially see lower queue times because the scheduler can backfill.
 

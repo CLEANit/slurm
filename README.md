@@ -15,6 +15,9 @@ Gen-3:
   thundercracker
   moonracer
 ```
+
+Because of some weird DNS pecularities at NRC, the hostname to log into these machines is not consistent.  Some machines respond to `.local`, and others require the full `.sims.nrc.ca` suffix. It is recommended to add the contents of [this hosts file](hosts) to your local `/etc/hosts` file (if you have local sudo).
+
 The maximum walltime for a job is 24 hours, and the default job length if no time limit is specified is 10 minutes. Shorter jobs can potentially see lower queue times because the scheduler can backfill.
 
 Since these nodes do not share a filesystem, jobs should likely be submitted a bit differently than a traditional cluster setup, with the specific node on which they are destined to run specified in the submit script. If the node is not specified, the job will run on _any_ node, and consequently file dependencies will either not be met, or files will be placed (or worse, overwritten) on a node not expected.  See the section "Node-agnostic queues" below for more information. 

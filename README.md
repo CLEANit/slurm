@@ -3,14 +3,14 @@
 
 SLURM is configured on the transformers, that is:
 ```
-Gen-1:
+Gen-1 (GTX 1080 x 4):
   arcee
   shockwave
   ratchet
   starscream
-Gen-2:
+Gen-2 (Titan V x 4):
   bumblebee
-Gen-3:
+Gen-3 (GTX 2080 Ti x 8):
   chromia
   thundercracker
   moonracer
